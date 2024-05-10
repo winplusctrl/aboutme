@@ -1,0 +1,113 @@
+:root {
+    --purple: #5a34ac;
+    --dark-purple: #40257B;
+    --darker-purple: #331e62;
+    --darkest-purple: #190f31;
+    --alightpurple: #1e123a;
+    --thedarkofalltime: #0f091d;
+    background-color: 
+    var(--darkest-purple);
+    color:white;
+    font-family: 'Montserrat', monospace;
+    text-align: center;
+}
+
+.activities {
+    background-color: var(--thedarkofalltime);
+    border-radius: 20px;
+    width: 15%;
+    height: 100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.activities img {
+    border-radius: 20px;
+    width: 90px;
+    margin-right: 10px;
+    padding-left: 5px;
+}
+
+.activities div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.activities span {
+    text-align: left;
+    padding-right: 5px;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: var(--thedarkofalltime);
+    text-align: center;
+    padding: 10px 0;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    padding: 5px;
+    background-color: var(--thedarkofalltime);
+    border-radius: 12px;
+    border: 3px solid var(--alightpurple);
+    width: 30%;
+    margin: auto;
+}
+.title {
+    animation-name: textanimation;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.desc {
+    color:var(--dark-purple);
+    font-weight: bolder
+}
+.hover {
+    font-size: 0px;
+    transition: font-size 0.5s ease;
+}
+
+.cat {
+    transition: width 0.5s;
+    transition-timing-function: ease;
+    border-radius: 10px;
+}
+
+.cat:hover {
+    width: 200px;
+}
+
+.cat:hover + .hover {
+    font-size: 16px;
+}
+
+@keyframes textanimation {
+    0% {
+    color: white;
+    rotate: 0deg;
+    }
+    25% {
+    color: orange;
+    rotate: 5deg;
+    }
+    50% {
+    color: green;
+    rotate: -5deg;
+    }
+    75% {
+    color: red;
+    rotate: 5deg;
+    }
+    100% {
+    color: white;
+    rotate: 0deg;
+    }
+}
