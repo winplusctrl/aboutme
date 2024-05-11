@@ -1,18 +1,51 @@
 let discord;
 let spotify;
-const songhtml = document.getElementById("song");
-const artisthtml = document.getElementById("artist");
+
 const timehtml = document.getElementById("time")
-const coverhtml = document.getElementById("cover")
 const statushtml = document.getElementById("status")
 const updatehtml = document.getElementById("update")
+
 async function getstatus() {
   const response = await fetch(
     "https://api.lanyard.rest/v1/users/1204626364972670977"
   );
   discord = await response.json();
+  const activities = discord.data.activities
+  
+  const code = activities.find(activity => activity.name === "Code");
+
+  if (code) {
+    const detailshtml = document.getElementById("details")
+    const statehtml = document.getElementById("state")
+    const timestamphtml = document.getElementById("timestamp")
+    const lang = document.getElementById("languagecover")
+
+    detailshtml.textContent = code.details;
+    statehtml.textContent = code.state;
+    timestamphtml.textContent = code.timestamp;
+    lang.src = `https://media.discordapp.net/external/${code.assets.large_image.split("mp:external/").pop()}`
+  }
+
+  const game = activities.find(activity => activity.name !== "Code" && activity.type === 0);
+  if (game) {
+    const detailshtml = document.getElementById("gamedetails")
+    const namehtml = document.getElementById("gamename")
+    const statehtml = document.getElementById("gamestate")
+    const timestamphtml = document.getElementById("gametimestamp")
+
+    namehtml.textContent = game.name
+    detailshtml.textContent = game.details;
+    statehtml.textContent = game.state;
+    const elapsedTimeSeconds = Math.floor((Date.now() - game.timestamps.start) / 1000);
+    const minutes = Math.floor(elapsedTimeSeconds / 60);
+    const seconds = elapsedTimeSeconds % 60;
+    const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    timestamphtml.textContent = `${formattedTime} elapsed`;         
+  }
   if(discord.data.listening_to_spotify) {
-    
+  const songhtml = document.getElementById("song");
+  const artisthtml = document.getElementById("artist");
+  const coverhtml = document.getElementById("cover")
 
   spotify = discord.data.spotify;
   console.log(spotify?.song);
@@ -27,7 +60,7 @@ async function getstatus() {
     artisthtml.textContent = "nobody"
     coverhtml.src = "winctrl.jpg"
   }
-
+  
   var status = discord.data.discord_status;
 
   statushtml.textContent = status;
@@ -49,10 +82,11 @@ function loop() {
 
   const i = setInterval(() => {
       console.log(`${seconds}`);
-      updatehtml.textContent = seconds
+      updatehtml.textContent = seconds + " seconds"
       seconds--;
       if (seconds < 0) {
           clearInterval(i);
+          updatehtml.textContent = "now"
           getstatus();
           loop();
       }
