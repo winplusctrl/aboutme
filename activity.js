@@ -4,7 +4,12 @@ let spotify;
 const timehtml = document.getElementById("time")
 const statushtml = document.getElementById("status")
 const updatehtml = document.getElementById("update")
-
+const songhtml = document.getElementById("song");
+const artisthtml = document.getElementById("artist");
+const coverhtml = document.getElementById("cover")
+const codediv = document.getElementById("code");
+const gamediv = document.getElementById("game");
+const spotifydiv = document.getElementById("spotify");
 async function getstatus() {
   const response = await fetch(
     "https://api.lanyard.rest/v1/users/1204626364972670977"
@@ -15,6 +20,7 @@ async function getstatus() {
   const code = activities.find(activity => activity.name === "Code");
 
   if (code) {
+    codediv.style.display = ""
     const detailshtml = document.getElementById("details")
     const statehtml = document.getElementById("state")
     const timestamphtml = document.getElementById("timestamp")
@@ -24,10 +30,13 @@ async function getstatus() {
     statehtml.textContent = code.state;
     timestamphtml.textContent = code.timestamp;
     lang.src = `https://media.discordapp.net/external/${code.assets.large_image.split("mp:external/").pop()}`
+  } else {
+    codediv.style.display = "none"
   }
 
   const game = activities.find(activity => activity.name !== "Code" && activity.type === 0);
   if (game) {
+    gamediv.style.display = "block"
     const detailshtml = document.getElementById("gamedetails")
     const namehtml = document.getElementById("gamename")
     const statehtml = document.getElementById("gamestate")
@@ -41,12 +50,12 @@ async function getstatus() {
     const seconds = elapsedTimeSeconds % 60;
     const formattedTime = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     timestamphtml.textContent = `${formattedTime} elapsed`;         
+  } else {
+    gamediv.style.display = "none"
   }
-  if(discord.data.listening_to_spotify) {
-  const songhtml = document.getElementById("song");
-  const artisthtml = document.getElementById("artist");
-  const coverhtml = document.getElementById("cover")
 
+  if(discord.data.listening_to_spotify) {
+    spotifydiv.style.display = ""
   spotify = discord.data.spotify;
   console.log(spotify?.song);
   console.log(discord);
@@ -56,6 +65,7 @@ async function getstatus() {
   coverhtml.src = spotify?.album_art_url;
   }
   else {
+    spotifydiv.style.display = "none"
     songhtml.textContent = "nothing"
     artisthtml.textContent = "nobody"
     coverhtml.src = "winctrl.jpg"
